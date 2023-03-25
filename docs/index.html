@@ -3,10 +3,212 @@
   <title>SuprsearchWeb</title>
   <base href="suprsearch-web">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC&family=Catamaran&family=Chakra+Petch:ital,wght@1,500&family=Didact+Gothic&family=Jost:wght@400;500&family=Tajawal:wght@300;400;500&family=Zilla+Slab&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>*{margin:0;padding:0;box-sizing:border-box;font-family:Zilla Slab,Tajawal,Jost,Amatic SC,Catamaran,Didact Gothic,sans-serif,cursive,serif}html{background-color:#283e51}body{min-height:100vh;background:#283E51;margin:0 auto}</style><link rel="stylesheet" href="styles.e8cc71179030f8b2.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.e8cc71179030f8b2.css"></noscript></head>
 <body>
   <app-root></app-root>
 <script src="runtime.d4d741f41d20d951.js" type="module"></script><script src="polyfills.65b75382456d1a42.js" type="module"></script><script src="main.67484d41e586b834.js" type="module"></script>
-
+<div class="bodycontainer">
+  <div class="screenSwitch">
+    <button class="screenButton" (click)="showScreen(1)">Multi-search
+    </button>
+    <button class="screenButton" (click)="showScreen(2)">OTTs</button>
+    <button class="screenButton" (click)="showScreen(3)">Social</button>
+    <button class="screenButton" (click)="showScreen(4)">Shopping</button>
+    <button class="screenButton" (click)="showScreen(5)">Online Courses</button>
+    <button class="screenButton" (click)="showScreen(6)">Travel</button>
+    <!-- <button class="screenButton" (click)="showScreen(7)">Finance</button> -->
+  </div>
+  
+  
+  <div *ngIf="currentScreen === 1">
+    <div class="container">
+      <h2 id="titles">Welcome to <strong style="color: #ee9ca7;">Suprsearch!</strong> <br>A simple tool to perform multiple searches simultaneously.</h2>
+      <p id="para">Type your search term below, and add variables to the part of the search term that changes.</p><br>
+      <p id="para">For instance,  if you're interested in finding restaurants in different cities, use the following structure:<br></p>
+  
+        <p id="para"><br>"Best restaurants in [city name]"<br></p>
+  
+        <p id="para"><br>Replace [city name] in the variable column with the name of the city/cities you want to search for, such as "Brooklyn", "NYC" or "Portland".</p>
+      <input class="searchbar" type="text" [(ngModel)]="searchQuery">
+      <button (click)="search()" class="search-btn" (keyup.enter)="search()">Search</button>
+      <h3 id="titles"><strong>Variables</strong></h3>
+      <p id="para">Replace the terms below, and each will be substituted in for variables and opens in seperate tabs</p>
+      <div class="variables">
+        <P style="color: white;">1<input class="custom-input" type="text" [(ngModel)]="variableQuery1"></P>
+        <P style="color: white;">2<input class="custom-input" type="text" [(ngModel)]="variableQuery2"></P>
+        <P style="color: white;">3<input class="custom-input" type="text" [(ngModel)]="variableQuery3"></P>
+        <P style="color: white;">4<input class="custom-input" type="text" [(ngModel)]="variableQuery4"></P>
+        <P style="color: white;">5<input class="custom-input" type="text" [(ngModel)]="variableQuery5"></P>
+        <P style="color: white;">6<input class="custom-input" type="text" [(ngModel)]="variableQuery6"></P>
+        <P style="color: white;">7<input class="custom-input" type="text" [(ngModel)]="variableQuery7"></P>
+      </div>
+      <div class="selectdiv">
+        <select title="select search engine" [(ngModel)]="selectedEngine">
+            <option value="google">Google</option>
+            <option value="bing">Bing</option>
+            <option value="yahoo">Yahoo</option>
+            <option value="Duck Duck Go">Duck Duck Go</option>
+            <option value="YOU">YOU</option>
+            <option value="Dogpile">Dogpile</option>
+            <option value="Webopedia">Webopedia</option>
+            <option value="Internet Archive">Internet Archive</option>
+            <option value="Twitter">Twitter</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div *ngIf="currentScreen === 2">
+    <div class="container">
+      <h2 id="titles">Enter the name of a movie or TV series, and select which Over-the-Top (OTT) streaming services you would to search in</h2>
+      <form (submit)="movieSearch()">
+        <input type="text" class="searchbar" id="searchQuery" [(ngModel)]="movieSearchQuery" name="searchQuery">
+        <button type="submit" class="search-btn">Search</button>
+        
+        <div class="checkformgroup">
+          <div class="form-group" id="checkforms">
+            <div class="form-check" *ngFor="let site of sites">
+              <input class="form-check-input" type="checkbox" [id]="site.name" [value]="site.name" [(ngModel)]="userSites[site.name]" name="sites">
+              <label class="form-check-label" [for]="site.name">
+                {{ site.name }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <button type="button" id="uncheck-btn" (click)="uncheckAll()">Clear Selection</button>
+      </form>
+    </div>
+  </div>
+  
+  
+  
+  
+  <div *ngIf="currentScreen === 3">
+    <div class="container">
+      <h2 id="titles">Enter the name or ID of the account, and select the social media platforms you would like to search across.</h2>
+      <form (submit)="searchSocialMedia()">
+          <input type="text" class="searchbar" id="searchQuery" [(ngModel)]="searchQuery" name="searchQuery">
+          <button type="submit" class="search-btn">Search</button>
+        <div class="form-group" id="checkforms">
+          <div class="form-check" *ngFor="let site of socialMediaSites">
+            <input class="form-check-input" type="checkbox" [id]="site.name" [value]="site.name" [(ngModel)]="socialSelectedSites[site.name]" name="sites">
+            <label class="form-check-label" [for]="site.name">
+              {{ site.name }}
+            </label>
+          </div>
+        </div>
+        <button type="button" id="uncheck-btn" (click)="resetSelection()">Clear Selection</button>
+      </form>
+    </div>
+  </div>
+  
+  
+  
+  
+  <div *ngIf="currentScreen === 4">
+    <div class="container">
+      <h2 id="titles">Enter the name of the product you want to search for and select the online shopping portals you want to look into.</h2>
+      <form (submit)="shoppingSearch()">
+          <input type="text" class="searchbar" id="searchQuery" [(ngModel)]="shoppingSearchQuery" name="searchQuery">
+          <button type="submit" class="search-btn">Search</button>
+        <div class="form-group" id="checkforms">
+          <div class="form-check" *ngFor="let site of shoppingSites">
+            <input class="form-check-input" type="checkbox" id="{{ site.name }}" [checked]="selectedShoppingSites[site.name]" (change)="toggleShoppingSite(site.name)">
+            <label class="form-check-label" for="{{ site.name }}">
+              {{ site.name }}
+            </label>
+          </div>
+        </div>
+      </form>
+      <button type="button" id="uncheck-btn" (click)="unshopcheckAll()">Clear Selection</button>
+    </div>
+  </div>
+  
+  
+  
+  
+  <div *ngIf="currentScreen === 5">
+    <div class="container">
+      <h2 id="titles">Specify the name of the course that you wish to pursue, and select the online course websites that you would like to search through.</h2>
+      <form (submit)="userOnlineCourseSites()">
+          <input type="text" class="searchbar"id="searchQuery" [(ngModel)]="onlineCourseSearchQuery" name="searchQuery">
+        <button type="submit" class="search-btn">Search</button>
+        <div class="form-group" id="checkforms">
+          <div class="form-check" *ngFor="let site of onlineCourseSites">
+            <input class="form-check-input" type="checkbox" id="{{ site.name }}" [value]="site.name" [(ngModel)]="selectedOnlineCourseSites[site.name]" name="sites">
+            <label class="form-check-label" for="{{ site.name }}">
+              {{ site.name }}
+            </label>
+          </div>
+        </div>
+        <button type="button" id="uncheck-btn" (click)="uncoursecheckAll()">Clear Selection</button>
+      </form>
+    </div>
+  </div>
+  
+  
+  
+  
+  <div *ngIf="currentScreen === 6">
+    <div class="container">
+      <h2 id="titles">Specify your travel destination and select the online travel or hotel booking websites you would like to search through.</h2>
+      <form (submit)="userTravelSites()">
+          <input type="text" class="searchbar" id="searchQuery" [(ngModel)]="travelSearchQuery" name="searchQuery">
+          <button type="submit" class="search-btn">Search</button>
+        <div class="form-group" id="checkforms">
+          <div class="form-check" *ngFor="let site of travelSites">
+            <input class="form-check-input" type="checkbox" id="{{ site.name }}" [checked]="selectedTravelSites[site.name]" (change)="selectedTravelSites[site.name] = !selectedTravelSites[site.name]" [value]="site.name" name="sites">
+            <label class="form-check-label" for="{{ site.name }}">
+              {{ site.name }}
+            </label>
+          </div>
+        </div>
+      </form>
+      <button type="button" id="uncheck-btn" (click)="traveluncheckAll()">Clear Selection</button>
+    </div>
+  </div>
+  
+  
+  
+  
+  <!-- <div *ngIf="currentScreen === 7">
+    <h2 id="titles">Select which financial websites you would like to open in new tabs</h2>
+  <div class="search-bar">
+    <input type="text" class="searchbar" id="financial-search" [(ngModel)]="financialSearchQuery">
+    <button class="search-btn" (click)="userFinancialSites()">Open</button>
+  </div>
+  
+  <div class="checkbox-list" id="checkforms">
+    <div *ngFor="let site of financialSites">
+      <input type="checkbox" id="{{site.name}}" [checked]="selectedFinancialSites[site.name]"
+        (change)="selectedFinancialSites[site.name] = !selectedFinancialSites[site.name]">
+      <label for="{{site.name}}">{{site.name}}</label>
+    </div>
+  </div>
+  
+  <div class="btn-container">
+    <button id="uncheck-btn" (click)="financeuncheckAll()">Clear Selection</button>
+  </div>
+  </div> -->
+  </div>
+  
+  <div class="footer">
+    <div class="line"></div>
+    <div class="icons">
+      <a id="twitterlink" href="https://twitter.com/1TrueJishnu?t=JP2YHo6a91WvC_5ybQqfrQ&s=09" target="_blank"><i id="twitter" class="fa-brands fa-twitter"></i></a>
+      <a href="https://www.instagram.com/1truejishnu/?__coig_restricted=1" target="_blank"><div id="instagram"><i class="fa-brands fa-instagram"></i></div></a>
+      <a href="https://www.linkedin.com/in/jishnu-sai-264115230" target="_blank"><i id="linkedin" class="fa-brands fa-linkedin"></i></a>
+    </div>
+    <div class="footer-text">
+      <!-- <p class="copyrt">copyright suprsearch</p> <br> -->
+      <p class="madewt">Made with <i class="fa-solid fa-heart"></i></p>
+      <!-- <a>Help</a> -->
+    </div>
+  </div>
 </body></html>
